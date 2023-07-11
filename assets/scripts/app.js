@@ -18,7 +18,24 @@ const updateUI = () =>{
     }
 }
 
-const renderNewMovieElement = (title, imageUrl, rating) =>{
+
+const deleteMovie=(movieId)=>{
+    let movieIndex = 0;
+for(const movie of movies){
+    if(movie.id===movieId){
+break;
+    }
+    movieIndex++;
+}
+movies.splice(movieIndex,1);
+const listRoot = document.getElementById('movie-list');
+listRoot.children[movieIndex].remove();
+};
+
+
+
+
+const renderNewMovieElement = (id,title, imageUrl, rating) =>{
 const newMovieElement = document.createElement('li');
 newMovieElement.className= 'movie-element';
 newMovieElement.innerHTML = `
@@ -30,11 +47,12 @@ newMovieElement.innerHTML = `
 <p>${rating}</p>
 </div>
 `;
+
+newMovieElement.addEventListener('click',deleteMovie.bind(null,id));
+
 const listRoot = document.getElementById('movie-list');
 listRoot.appendChild(newMovieElement);
 };
-
-
 
 const toggleBackdrop = () => {
     backdrop.classList.toggle('visible');
@@ -51,8 +69,6 @@ for(const userInput of userInputs){
     userInput.value = '';
 }
 }
-
-
 
 
 
@@ -79,6 +95,7 @@ return;
 }
 
 const newMovie = {
+id: Math.random().toString(),
 title: titleValue,
 image: imageValue,
 rating: ratingValue
@@ -88,9 +105,8 @@ console.log(movies);
 toggleMovieModal();
 clearMovieInput();
 updateUI();
-renderNewMovieElement(newMovie.title,newMovie.image,newMovie.rating);
+renderNewMovieElement(newMovie.id,newMovie.title,newMovie.image,newMovie.rating);
 };
-
 
 
 startAddMoveButton.addEventListener('click',toggleMovieModal);
